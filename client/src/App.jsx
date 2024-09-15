@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import AuthLayout from './components/auth/layout'
-import Login from './pages/auth/login'
-import Register from './pages/auth/register'
+import AuthRegister from './pages/auth/register'
+import AuthLogin from './pages/auth/login'
 import Adminlayout from './components/admin-view/layout'
 import './App.css'
 import AdminDashboard from './pages/admin-view/dashboard'
@@ -16,9 +16,8 @@ import ShoppingCheckOut from './pages/shopping-view/checkout'
 import NotFound from './pages/not-found'
 import CheckAuth from './components/common/check-auth'
 import UnauthPage from './pages/unauth-page'
-
 function App() {
-  const isAuthenticated = true
+  const isAuthenticated = false
   const user = {
     role: 'admin'
   }
@@ -33,8 +32,8 @@ function App() {
               <AuthLayout />
             </CheckAuth>
           } >
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
+            <Route path="login" element={<AuthLogin />} />
+            <Route path="register" element={<AuthRegister />} />
           </Route>
 
           <Route path="/admin" element={
