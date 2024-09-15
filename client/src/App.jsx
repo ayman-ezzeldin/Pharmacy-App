@@ -15,10 +15,13 @@ import ShoppingListing from './pages/shopping-view/listing'
 import ShoppingCheckOut from './pages/shopping-view/checkout'
 import NotFound from './pages/not-found'
 import CheckAuth from './components/common/check-auth'
+import UnauthPage from './pages/unauth-page'
 
 function App() {
-  const isAuthenticated = false
-  const user = null
+  const isAuthenticated = true
+  const user = {
+    role: 'admin'
+  }
   return (
     <>
       <div className="flex flex-col overflow-hidden bg-white" >
@@ -56,6 +59,7 @@ function App() {
             <Route path="checkout" element={<ShoppingCheckOut />} />
           </Route>
           <Route path="*" element={<NotFound />} />
+          <Route path="/unauth-page" element={<UnauthPage />} />
         </Routes>
       </div>
     </>
