@@ -27,7 +27,7 @@ function CommonForm({
     let element = null;
     const value = formData[getControlItem.name] || "";
 
-    switch (getControlItem.componentType) {
+    switch (getControlItem.componentType) { 
       case types.INPUT:
         element = (
           <Input
