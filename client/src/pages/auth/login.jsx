@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import CommonForm from "../../components/common/form";
 import { loginFormControls } from "../../config";
 import { useState } from "react";
+import { useToast } from "../../hooks/use-toast";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../store/auth-slice";
 
 const initialState = {
   email: "",
@@ -9,10 +12,31 @@ const initialState = {
 };
 
 const AuthLogin = () => {
-
   const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
+  const {toast} = useToast();
 
-  function onSubmit() {
+  function onSubmit(event) {
+    event.preventDefault();
+    if (!formData.email || !formData.password) {
+      return toast({
+        title: "All fields are required.",
+      })
+    }
+    console.log(formData);
+    
+    dispatch(loginUser(formData)).then((data) => {
+      if(data?.payload?.success){
+        toast({
+          title: data?.payload?.message,
+        })
+      } else {
+        toast({
+          title: data?.payload?.message,
+          variant : 'destructive'
+        })
+      }
+    } )
     
   }
   return (

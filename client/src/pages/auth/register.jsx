@@ -20,7 +20,6 @@ const AuthRegister = () => {
   const {toast} = useToast()
   function onSubmit(event) {
     event.preventDefault();
-    console.log(formData);
     if (!formData.username || !formData.email || !formData.password) {
       // Handle missing fields
       console.log('All fields are required.');
@@ -33,6 +32,10 @@ const AuthRegister = () => {
           title: data?.payload?.message,
         })
         navigate('/auth/login')
+      } else {
+        toast({
+          title: data?.payload?.message
+        })
       }
     } )
     
