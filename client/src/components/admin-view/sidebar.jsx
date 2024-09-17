@@ -4,7 +4,6 @@ import {
   LayoutDashboard,
   ShoppingBasket,
 } from "lucide-react";
-import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 
@@ -55,7 +54,7 @@ function AdminSideBar({ open, setOpen }) {
   const navigate = useNavigate();
 
   return (
-    <Fragment>
+    <>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="left" className="w-64 bg-white">
           <div className="flex flex-col h-full">
@@ -79,7 +78,7 @@ function AdminSideBar({ open, setOpen }) {
         </div>
         <MenuItems />
       </aside>
-    </Fragment>
+    </>
   );
 }
 
