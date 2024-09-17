@@ -23,7 +23,6 @@ const AuthLogin = () => {
         title: "All fields are required.",
       })
     }
-    console.log(formData);
     
     dispatch(loginUser(formData)).then((data) => {
       if(data?.payload?.success){

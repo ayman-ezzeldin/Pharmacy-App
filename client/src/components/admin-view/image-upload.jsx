@@ -1,42 +1,67 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
+import axios from "axios";
 
 const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl}) => {
-
-  function handelImageFileChange(event) {    
-    const file = event.target.files[0]
-    setImageFile(file)
-    setUploadedImageUrl(URL.createObjectURL(file))
-  }
-
-  function handelDragOver(event) {
-    event.preventDefault()
-  }
-
-  function handelDrop(event) {
-    event.preventDefault()
-    const droppedFile = event.dataTransfer?.files[0]
-    if(droppedFile) setImageFile(droppedFile)
-    
-  }
-
-  function handelRemoveImage() {
-    setImageFile(null)
-    if(inputRef.current) inputRef.current.value = ''
-  }
-
   const inputRef = useRef(null)
+  
+  
+  function handleImageFileChange(event) {
+    // console.log(event.target.files, "event.target.files");
+    const selectedFile = event.target.files?.[0];
+    // console.log(selectedFile);
+
+    if (selectedFile) setImageFile(selectedFile);
+  }
+
+  function handleDragOver(event) {
+    event.preventDefault();
+  }
+
+  function handleDrop(event) {
+    event.preventDefault();
+    const droppedFile = event.dataTransfer.files?.[0];
+    if (droppedFile) setImageFile(droppedFile);
+  }
+
+  function handleRemoveImage() {
+    setImageFile(null);
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  }
+
+  async function uploadImageToCloudinary() {
+    // setImageLoadingState(true);
+    const data = new FormData();
+    data.append("my_file", imageFile);
+    const response = await axios.post(
+      "http://localhost:5000/api/admin/products/upload-image",
+      data
+    );
+    console.log(response, "response");
+
+    if (response?.data?.success) {
+      setUploadedImageUrl(response.data.result.url);
+      // setImageLoadingState(false);
+    }
+  }
+
+  useEffect(() => {
+    if (imageFile !== null) uploadImageToCloudinary();
+  }, [imageFile]);
+
   return (
     <div className="w-full max-w-md mx-auto mt-4" >
       <Label className="text-lg font-semibold mb-2 block" >Upload Image</Label>
       <div 
-        onDragOver={handelDragOver}
-        onDrop={handelDrop}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
         className=" border-2 border-dashed border-gray-300 rounded-lg p-4" >
-        <Input type="file" id="image-upload" className="hidden" ref={inputRef} onChange={handelImageFileChange} />
+        <Input type="file" id="image-upload" className="hidden" ref={inputRef} onChange={handleImageFileChange} />
       {
         !imageFile ? (
           <Label
@@ -53,7 +78,7 @@ const ProductImageUpload = ({imageFile, setImageFile, uploadedImageUrl, setUploa
             </div>
             <p className=" text-sm text-gray-500" >{imageFile?.name}</p>
             <Button variant='ghost' size='icon' className="text-muted-foreground hover::text-foreground"
-              onClick={handelRemoveImage}
+              onClick={handleRemoveImage}
             >
               <XIcon className="w-5 h-5" />
               <span className="sr-only"> Remove File </span>
