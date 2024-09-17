@@ -3,7 +3,7 @@ import axios from "axios";
 
 const initialState = {
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true,
   user: null,
 };
 
@@ -110,24 +110,24 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
       })
-      // .addCase(checkAuth.pending, (state) => {
-      //   state.isLoading = true;
-      // })
-      // .addCase(checkAuth.fulfilled, (state, action) => {
-      //   state.isLoading = false;
-      //   state.user = action.payload.success ? action.payload.user : null;
-      //   state.isAuthenticated = action.payload.success;
-      // })
-      // .addCase(checkAuth.rejected, (state, action) => {
-      //   state.isLoading = false;
-      //   state.user = null;
-      //   state.isAuthenticated = false;
-      // })
-      // .addCase(logoutUser.fulfilled, (state, action) => {
-      //   state.isLoading = false;
-      //   state.user = null;
-      //   state.isAuthenticated = false;
-      // });
+      .addCase(checkAuth.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.success ? action.payload.user : null;
+        state.isAuthenticated = action.payload.success;
+      })
+      .addCase(checkAuth.rejected, (state) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+      });
   },
 });
 
