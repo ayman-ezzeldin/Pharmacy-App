@@ -9,13 +9,13 @@ function AdminProductTile({
   handleDelete,
 }) {
   return (
-    <Card className="w-full max-w-sm mx-auto">
+    <Card className="w-full max-w-sm mx-auto rounded-t-2xl shadow-2xl  ">
       <div>
         <div className="relative">
           <img
             src={product?.image}
             alt={product?.title}
-            className="w-full h-[300px] object-cover rounded-t-lg"
+            className="w-full h-[300px] object-cover rounded-t-2xl "
           />
         </div>
         <CardContent>
@@ -40,10 +40,13 @@ function AdminProductTile({
               setCurrentEditedId(product?._id);
               setFormData(product);
             }}
+            className="bg-green-700 rounded-xl text-white hover:bg-black/ hover:text-white/90"
           >
             Edit
           </Button>
-          <Button onClick={() => handleDelete(product?._id)}>Delete</Button>
+          <Button onClick={() => handleDelete(product?._id)}
+            className="bg-red-700 rounded-xl text-white hover:bg-black/ hover:text-white/90"
+            >Delete</Button>
         </CardFooter>
       </div>
     </Card>

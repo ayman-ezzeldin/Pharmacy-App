@@ -16,7 +16,7 @@ import {
   editProduct,
   fetchAllProducts,
 } from "@/store/admin/products-slice";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const initialFormData = {
@@ -103,7 +103,7 @@ function AdminProducts() {
   console.log(formData, "productList");
 
   return (
-    <Fragment>
+    <>
       <div className="mb-5 w-full flex justify-end">
         <Button 
           className="bg-black rounded-3xl text-white hover:bg-black/ hover:text-white/70"
@@ -160,7 +160,7 @@ function AdminProducts() {
           </div>
         </SheetContent>
       </Sheet>
-    </Fragment>
+    </>
   );
 }
 
