@@ -29,7 +29,7 @@ function App() {
     dispatch(checkAuth())
   },[dispatch])
 
-  if (isLoading) return <Skeleton className="w-[100px] bg-black h-[20px] rounded-full" />
+  if (isLoading) return <Skeleton className="w-[100px] bg-gray-100 h-[20px] rounded-full" />
 
 
   return (
