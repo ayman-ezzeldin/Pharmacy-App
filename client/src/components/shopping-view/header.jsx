@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom"
-import { HousePlug, Menu, ShoppingCart } from 'lucide-react'
+import { Link, useNavigate } from "react-router-dom"
+import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
 import {Button} from '../ui/button'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { shoppingViewHeaderMenuItems } from "../../config"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger,DropdownMenuItem, DropdownMenuSeparator } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '../ui/avatar'
+import { logoutUser } from "@/store/auth-slice";
+
 
 const MenuItems = () => {
   return (
@@ -21,8 +23,10 @@ const MenuItems = () => {
 
 export const HeaderRightContent = () => {
   const {user} = useSelector(state => state.auth)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   return (
-    <div className="flex lg:items-center lg:flex-row flex-row gap-4" >
+    <div className="flex lg:items-center lg:flex-row flex-col gap-4" >
       <Button varient="outline" size='icon' >
         <ShoppingCart className="h-6 w-6" />
         <span className="sr-only">User Cart</span>
@@ -35,8 +39,18 @@ export const HeaderRightContent = () => {
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="top" className=" w-56 bg-white" >
-          <DropdownMenuLabel>Logged in</DropdownMenuLabel>
+        <DropdownMenuContent side="right" className=" w-48 bg-white" >
+          <DropdownMenuLabel>Logged in {user?.username} </DropdownMenuLabel>
+          <DropdownMenuSeparator/>
+          <DropdownMenuItem className=" cursor-pointer" onClick={()=> navigate('/shop/account')} >
+            <UserCog className="mr-2 h-4 w-4" />
+            Account
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className=" cursor-pointer" onClick={() => dispatch(logoutUser())} >
+            <LogOut className="mr-2 h-4 w-4" />
+            Log out
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
@@ -64,14 +78,15 @@ const ShoppingHeader = () => {
           </SheetTrigger>
           <SheetContent side='left' className="w-full max-w-xs bg-white" >
             <MenuItems />
+            <HeaderRightContent />
           </SheetContent>
         </Sheet>
         <div className=" hidden lg:block" >
           <MenuItems />
         </div>
-        { isAuthenticated ? <div>
+        <div className=" hidden lg:block">
           <HeaderRightContent />
-        </div> : null }
+        </div> 
       </div>
     </header>
   )
