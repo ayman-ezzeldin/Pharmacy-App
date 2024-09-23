@@ -7,14 +7,15 @@ import { shoppingViewHeaderMenuItems } from "../../config"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger,DropdownMenuItem, DropdownMenuSeparator } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '../ui/avatar'
 import { logoutUser } from "@/store/auth-slice";
+import { useState } from "react"
 
 
-const MenuItems = () => {
+const MenuItems = ({ setOpen }) => {
   return (
     <nav className=" flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row" >
       {
         shoppingViewHeaderMenuItems.map(menuItem =>
-          <Link key={menuItem.id} to={menuItem.path} className=" text-sm font-medium" > {menuItem.label} </Link>
+          <Link key={menuItem.id} to={menuItem.path} onClick={()=> setOpen(false)} className=" text-sm font-medium" > {menuItem.label} </Link>
         )
       }
     </nav>
@@ -58,6 +59,7 @@ export const HeaderRightContent = () => {
 }
 
 const ShoppingHeader = () => {
+  const [open, setOpen] = useState(false)
 
   // const {isAuthenticated, user} = useSelector((state)=> state.auth)
   
@@ -68,7 +70,7 @@ const ShoppingHeader = () => {
           <HousePlug className="h-6 w-6" />
           <span className="font-bold" >E-commerce</span>
         </Link>
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen} >
           <SheetTrigger asChild >
             <Button varient="outline" size='icon' className="lg:hidden">
             <Menu />
@@ -76,7 +78,7 @@ const ShoppingHeader = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side='left' className="w-full max-w-xs bg-white" >
-            <MenuItems />
+            <MenuItems setOpen={setOpen} />
             <HeaderRightContent />
           </SheetContent>
         </Sheet>
