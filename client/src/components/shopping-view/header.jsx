@@ -59,8 +59,7 @@ export const HeaderRightContent = () => {
 
 const ShoppingHeader = () => {
 
-  const {isAuthenticated, user} = useSelector((state)=> state.auth)
-  console.log(isAuthenticated,user);
+  // const {isAuthenticated, user} = useSelector((state)=> state.auth)
   
   return (
     <header className=" sticky top-0 z-40 border-b bg-background" >
