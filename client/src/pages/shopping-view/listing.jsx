@@ -7,6 +7,21 @@ import ShoppingProductTile from "../../components/shopping-view/product-tile"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { fetchAllFilteredProducts } from "../../store/shop/products-slice"
+import { useSearchParams } from "react-router-dom"
+
+
+const createSearchParamsHelper = (filterParams) => {
+  const queryParams = [];
+
+  for (const [key, value] of Object.entries(filterParams)) {    
+    if(Array.isArray(value) && value.length > 0) {
+      const paramValue = value.join(',')
+      queryParams.push(`${key}=${paramValue}`)
+      }
+  }
+
+  return queryParams.join('&')
+}
 
 const ShoppingListing = () => {
 
@@ -15,6 +30,7 @@ const ShoppingListing = () => {
 
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null)  
+  const [searchParams, setSearchParams] = useSearchParams()
 
   function handleSort(value) {
     setSort(value)
@@ -41,17 +57,28 @@ const ShoppingListing = () => {
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters))
   }
 
+  useEffect(() => {
+    if( filters && Object.keys(filters).length > 0) {
+      const createQueryString = createSearchParamsHelper(filters)      
+      setSearchParams(new URLSearchParams(createQueryString))
+      console.log(createQueryString);
+    }
+  },[filters])
+  console.log(searchParams);
+  
+  
+
 
   useEffect(()=> {
-    dispatch(fetchAllFilteredProducts())
-  },[dispatch])
+    if( filters !== null && sort !== null)
+    dispatch(fetchAllFilteredProducts({filterParams : filters, sortParams : sort}))
+  },[dispatch, sort, filters])
 
   useEffect(() => {
     setSort('price-lowtohigh')
     setFilters(JSON.parse(sessionStorage.getItem('filters')))
     
   },[])
-  console.log('filters', filters);
 
 
   return (
