@@ -3,10 +3,10 @@ import { Badge } from '../ui/badge'
 import { brandOptionsMap, categoryOptionsMap } from "../../config";
 import { Button } from "../ui/button";
 
-const ShoppingProductTile = ({ product }) => {
+const ShoppingProductTile = ({ product, handleGetProductDetails }) => {
   return (
     <Card className="w-full max-w-sm mx-auto">
-      <div>
+      <div onClick={() => handleGetProductDetails(product?._id)} >
         <div className="relative overflow-hidden">
           <img
             src={product?.image}
@@ -33,7 +33,7 @@ const ShoppingProductTile = ({ product }) => {
           </div>
         </CardContent>
         <CardFooter> 
-          <Button variant="outline" className="w-full hover:bg-gray-100 rounded-3xl" >Add to cart</Button>
+          <Button variant="outline" className="w-full bg-black hover:bg-black/90 text-white hover:text-white/80 text-xl rounded-xl " >Add to cart</Button>
         </CardFooter>
       </div>
     </Card>

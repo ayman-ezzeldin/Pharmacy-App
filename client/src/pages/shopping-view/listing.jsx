@@ -6,8 +6,9 @@ import { sortOptions } from "../../config"
 import ShoppingProductTile from "../../components/shopping-view/product-tile"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
-import { fetchAllFilteredProducts } from "../../store/shop/products-slice"
+import { fetchAllFilteredProducts, fetchProductDetails } from "../../store/shop/products-slice"
 import { useSearchParams } from "react-router-dom"
+import ProductDetailsDialog from "../../components/shopping-view/product-details"
 
 
 const createSearchParamsHelper = (filterParams) => {
@@ -26,11 +27,12 @@ const createSearchParamsHelper = (filterParams) => {
 const ShoppingListing = () => {
 
   const dispatch = useDispatch()
-  const {productList} = useSelector(state => state.shopProducts)
+  const {productList, productDetails} = useSelector(state => state.shopProducts)
 
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null)  
   const [searchParams, setSearchParams] = useSearchParams()
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false)
 
   function handleSort(value) {
     setSort(value)
@@ -57,29 +59,31 @@ const ShoppingListing = () => {
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters))
   }
 
+  function handleGetProductDetails(getCurrentProductId) {
+    dispatch(fetchProductDetails(getCurrentProductId));
+  }
+
   useEffect(() => {
     if( filters && Object.keys(filters).length > 0) {
       const createQueryString = createSearchParamsHelper(filters)      
       setSearchParams(new URLSearchParams(createQueryString))
-      console.log(createQueryString);
     }
   },[filters])
-  console.log(searchParams);
   
-  
-
-
   useEffect(()=> {
     if( filters !== null && sort !== null)
     dispatch(fetchAllFilteredProducts({filterParams : filters, sortParams : sort}))
   },[dispatch, sort, filters])
 
+  useEffect(()=> {
+    if(productDetails !== null) setOpenDetailsDialog(true)
+  },[productDetails])
+
   useEffect(() => {
     setSort('price-lowtohigh')
-    setFilters(JSON.parse(sessionStorage.getItem('filters')))
-    
+    setFilters(JSON.parse(sessionStorage.getItem('filters')) || {})
   },[])
-
+  
 
   return (
     <div className=' grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6 ' >
@@ -116,12 +120,13 @@ const ShoppingListing = () => {
             {
               productList && productList.length > 0 ?
                 productList.map(productItem => 
-                <ShoppingProductTile  key={productItem._id} product={productItem} />
+                <ShoppingProductTile handleGetProductDetails={handleGetProductDetails}  key={productItem._id} product={productItem} />
               )
               : null
             }
           </div>
       </div>
+      <ProductDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} productDetails={productDetails} />
     </div>
   )
 }
