@@ -1,14 +1,14 @@
-import { brandOptionsMap, categoryOptionsMap } from '../../config'
 import { Button } from '../ui/button'
 import { Dialog, DialogContent } from '../ui/dialog'
 import { Separator } from '../ui/separator'
 import { Avatar, AvatarFallback } from '../ui/avatar'
 import { StarIcon } from 'lucide-react'
+import { Input } from '../ui/input' 
 const ProductDetailsDialog = ({ open , setOpen, productDetails}) => {
   return (
     <Dialog open={open} onOpenChange={setOpen} >
-      <DialogContent className=' grid grid-cols-2 bg-white gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] ' >
-        <div className="relative overflow-hidden rounded-lg">
+      <DialogContent className=' grid md:grid-cols-2 bg-white gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] ' >
+        <div className="relative overflow-hidden ">
           <img 
             src={productDetails?.image}
             alt={productDetails?.title}
@@ -17,20 +17,26 @@ const ProductDetailsDialog = ({ open , setOpen, productDetails}) => {
             className=' w-full object-cover aspect-square rounded-xl '
             />
         </div>
-        <div className="">
+        <div>
           <div>
             <h1 className=' text-3xl font-extrabold'>{productDetails?.title}</h1>
             <p className=' text-muted-foreground text-2xl mb-5 mt-4'>{productDetails?.description}</p>
           </div>
-          {/* <div className="flex justify-between items-center mb-2 ">
-            <span className="text-sm text-muted-foreground"> {categoryOptionsMap[productDetails?.category]}</span>
-            <span className="text-sm text-muted-foreground"> {brandOptionsMap[productDetails?.brand]}</span>
-          </div> */}
           <div className="flex justify-between items-center mb-2 ">
             <span className={` ${ productDetails?.salePrice > 0 ? "line-through" : "" } text-2xl text-muted-foreground font-bold`}> $ {productDetails?.price}</span>
             {productDetails?.salePrice > 0 ? (
               <span className="text-2xl text-muted-foreground font-bold">$ {productDetails?.salePrice}</span>
             ) : null}
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-0.5">
+                    <StarIcon className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                    <StarIcon className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                    <StarIcon className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                    <StarIcon className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                    <StarIcon className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+            </div>
+            <span className=' text-muted-foreground' >(5.0)</span>
           </div>
           <div className=' my-5'>
           <Button variant="outline" className="w-full bg-black hover:bg-black/90 text-white hover:text-white/80 text-xl rounded-xl " >Add to cart</Button>
@@ -58,6 +64,10 @@ const ProductDetailsDialog = ({ open , setOpen, productDetails}) => {
                 </div>
               </div>
               <hr />
+            </div>
+            <div className="flex mt-6 gap-2">
+              <Input className=' w-full rounded-xl' placeholder="Add a review" />
+              <Button variant="outline" className=" bg-black hover:bg-black/90 text-white hover:text-white/80 text-lg rounded-xl " >Submit</Button>
             </div>
           </div>
         </div>
