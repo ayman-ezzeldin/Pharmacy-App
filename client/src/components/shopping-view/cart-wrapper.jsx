@@ -1,21 +1,33 @@
 import { SheetContent, SheetHeader, SheetTitle } from "../ui/sheet"
 import { Button } from "../ui/button"
+import UserCartContent from "./cart-items-content"
+const UserCartWrapper = ({ cartItems }) => {
 
-const UserCartWrapper = () => {
+  const totalCartAmount = cartItems && cartItems.length > 0 
+    ? cartItems.reduce(
+      (sum, currentItem) => 
+        sum + (currentItem.salePrice > 0 ? currentItem.salePrice : currentItem.price) * currentItem.quantity, 0
+    ) : 0;
+
   return (
     <SheetContent className=" bg-white sm:max-w-md" >
       <SheetHeader>
         <SheetTitle>Your Cart</SheetTitle>
       </SheetHeader>
       <div className="mt-8 space-y-4">
+        {
+          cartItems && cartItems.length > 0 ?
+          cartItems.map(cartItem => <UserCartContent key={cartItem._id} cartItem={cartItem} />) 
+          : null
+        }
         <div className="mt-8 space-y-4">
           <div className="flex justify-between">
             <span className=" font-bold">Total</span>
-            <span className=" font-bold">$ 1000</span>
+            <span className=" font-bold">$ {totalCartAmount}</span>
           </div>
         </div>
       </div>
-      <Button className="w-full mt-6 bg-black text-white text-lg rounded-xl"> Checkout </Button>
+      <Button className="w-full mt-6 bg-black text-white hover:bg-black hover:text-white text-lg rounded-xl"> Checkout </Button>
     </SheetContent>
   )
 }
