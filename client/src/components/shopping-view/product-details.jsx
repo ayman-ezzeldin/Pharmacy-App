@@ -4,9 +4,40 @@ import { Separator } from '../ui/separator'
 import { Avatar, AvatarFallback } from '../ui/avatar'
 import { StarIcon } from 'lucide-react'
 import { Input } from '../ui/input' 
+import { useDispatch, useSelector } from 'react-redux'
+import { useToast } from '../../hooks/use-toast'
+import { addToCart, fetchCartItems } from '../../store/shop/cart-slice'
+import { setProductDetails } from '../../store/shop/products-slice'
 const ProductDetailsDialog = ({ open , setOpen, productDetails}) => {
+
+  const dispatch = useDispatch()
+  const { toast } = useToast()
+  const { user } = useSelector(state => state.auth)
+  function handleAddToCart(getCurrentProductId) {
+    dispatch(
+      addToCart({
+        userId: user?.id,
+        productId: getCurrentProductId,
+        quantity: 1,
+      })
+    ).then(data => {
+      if (data?.payload?.success) {
+        dispatch(fetchCartItems(user?.id));
+        toast({
+          variant: 'destructive',
+          title: 'Cart item added successfully'
+        })
+      }
+    }
+    )
+  }
+
+  function handleDialogClose() {
+    setOpen(false)
+    dispatch(setProductDetails())
+  }
   return (
-    <Dialog open={open} onOpenChange={setOpen} >
+    <Dialog open={open} onOpenChange={handleDialogClose} >
       <DialogContent className=' grid md:grid-cols-2 bg-white gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] ' >
         <div className="relative overflow-hidden ">
           <img 
@@ -39,7 +70,10 @@ const ProductDetailsDialog = ({ open , setOpen, productDetails}) => {
             <span className=' text-muted-foreground' >(5.0)</span>
           </div>
           <div className=' my-5'>
-          <Button variant="outline" className="w-full bg-black hover:bg-black/90 text-white hover:text-white/80 text-xl rounded-xl " >Add to cart</Button>
+          <Button 
+            onClick={() => handleAddToCart(productDetails?._id)} 
+            variant="outline" 
+            className="w-full bg-black hover:bg-black/90 text-white hover:text-white/80 text-xl rounded-xl " >Add to cart</Button>
           </div>
           <Separator />
           <div className=' max-h-[300px] overflow-auto' >
