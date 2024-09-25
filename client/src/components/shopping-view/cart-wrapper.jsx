@@ -17,7 +17,8 @@ const UserCartWrapper = ({ cartItems }) => {
       <div className="mt-8 space-y-4">
         {
           cartItems && cartItems.length > 0 ?
-          cartItems.map(cartItem => <UserCartContent key={cartItem._id} cartItem={cartItem} />) 
+          // adding Math.random() just to avoid warning
+          cartItems.map(cartItem => <UserCartContent key={cartItem._id + Math.random()} cartItem={cartItem} />) 
           : null
         }
         <div className="mt-8 space-y-4">
