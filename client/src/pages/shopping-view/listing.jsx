@@ -46,6 +46,9 @@ const ShoppingListing = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const { toast } = useToast();
+
+  const categorySearchParam = searchParams.get("category");
+
   function handleSort(value) {
     setSort(value);
   }
@@ -93,6 +96,11 @@ const ShoppingListing = () => {
     )
   }
 
+    useEffect(() => {
+    setSort("price-lowtohigh");
+    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+  }, [categorySearchParam]);
+
   useEffect(() => {
     if (filters && Object.keys(filters).length > 0) {
       const createQueryString = createSearchParamsHelper(filters);
@@ -111,10 +119,7 @@ const ShoppingListing = () => {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
 
-  useEffect(() => {
-    setSort("price-lowtohigh");
-    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
-  }, []);
+
 
   return (
     <div className=" grid grid-cols-1 md:grid-cols-[150px_1fr] gap-6 p-4 md:p-6 ">

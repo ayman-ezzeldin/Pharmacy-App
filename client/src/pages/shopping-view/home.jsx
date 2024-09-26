@@ -20,8 +20,13 @@ import {
 import { Card, CardContent } from "../../components/ui/card";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllFilteredProducts } from "../../store/shop/products-slice";
+import { fetchAllFilteredProducts, fetchProductDetails } from "../../store/shop/products-slice";
 import ShoppingProductTile from "../../components/shopping-view/product-tile";
+import { useNavigate } from "react-router-dom";
+import { addToCart, fetchCartItems } from "../../store/shop/cart-slice";
+import { useToast } from "../../hooks/use-toast";
+import ProductDetailsDialog from "../../components/shopping-view/product-details";
+
 
 const categoriesWithIcon = [
   { id: "men", label: "Men", icon: ShirtIcon },
@@ -42,20 +47,63 @@ const brandsWithIcon = [
 
 const ShoppingHome = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { productList } = useSelector((state) => state.shopProducts);
+  const { productList, productDetails } = useSelector(
+    (state) => state.shopProducts
+  );
+  // const { featureImageList } = useSelector((state) => state.commonFeature);
+
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+
+  const { user } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+
   const slides = [bannerOne, bannerTwo, bannerThree];
 
 
-  function handleNavigateToListingPage() {
-    console.log("navigate to listing page");
-    
+  function handleNavigateToListingPage(getCurrentItem, section) {
+    sessionStorage.removeItem("filters");
+    const currentFilter = {
+      [section]: [getCurrentItem.id],
+    };
+
+    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+    navigate(`/shop/listing`);
   }
+
+  function handleGetProductDetails(getCurrentProductId) {
+    dispatch(fetchProductDetails(getCurrentProductId));
+  }
+
+  function handleAddtoCart(getCurrentProductId) {
+    dispatch(
+      addToCart({
+        userId: user?.id,
+        productId: getCurrentProductId,
+        quantity: 1,
+      })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchCartItems(user?.id));
+        toast({
+          title: "Product is added to cart",
+        });
+      }
+    });
+  }
+
+  useEffect(() => {
+    if (productDetails !== null) setOpenDetailsDialog(true);
+  }, [productDetails]);
+
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-    }, 4000);
+    }, 5000);
 
     return () => clearInterval(timer);
   }, [currentSlide, slides.length]);
@@ -67,7 +115,7 @@ const ShoppingHome = () => {
         sortParams: "price-lowtohigh",
       })
     );
-  });
+  }, [dispatch]);
 
   return (
     <div className=" flex flex-col min-h-screen">
@@ -118,15 +166,15 @@ const ShoppingHome = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {categoriesWithIcon.map((categoryItem) => (
               <Card
-                onClick={()=> handleNavigateToListingPage(categoryItem, "category")}
+                onClick={() =>
+                  handleNavigateToListingPage(categoryItem, "category")
+                }
                 key={categoryItem.id}
                 className="cursor-pointer hover:shadow-lg transition-shadow"
               >
                 <CardContent className="flex flex-col items-center justify-center p-6">
                   <categoryItem.icon className="w-12 h-12 mb-4 text-primary" />
-                  <span className="text-lg font-semibold">
-                    {categoryItem.label}
-                  </span>
+                  <span className="font-bold">{categoryItem.label}</span>
                 </CardContent>
               </Card>
             ))}
@@ -142,6 +190,9 @@ const ShoppingHome = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {brandsWithIcon.map((brandItem) => (
               <Card
+              onClick={() =>
+                handleNavigateToListingPage(brandItem, "brand")
+              }
                 key={brandItem.id}
                 className="cursor-pointer hover:shadow-lg transition-shadow"
               >
@@ -167,13 +218,19 @@ const ShoppingHome = () => {
               <ShoppingProductTile
                 key={product?._id}
                 product={product}
-                handleGetProductDetails={() => {}}
-                handleAddToCart={() => {}}
+                handleGetProductDetails={handleGetProductDetails}
+                handleAddToCart={handleAddtoCart}
               />
             ))}
           </div>
         </div>
       </section>  
+      
+      <ProductDetailsDialog
+        open={openDetailsDialog}
+        setOpen={setOpenDetailsDialog}
+        productDetails={productDetails}
+      />
 
     </div>
   );
