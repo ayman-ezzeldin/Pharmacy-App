@@ -43,6 +43,7 @@ function CommonForm({
                 [getControlItem.name]: event.target.value,
               })
             }
+            className=" rounded-xl"
           />
         );
 
@@ -87,7 +88,7 @@ function CommonForm({
                 [getControlItem.name]: event.target.value,
               })
             }
-            className=" resize-none"
+            className=" resize-none rounded-xl"
           />
         );
 
@@ -125,7 +126,7 @@ function CommonForm({
           </div>
         ))}
       </div>
-      <Button disabled={isBtnDisabled}  type="submit" className="mt-2 bg-black text-white w-full hover:bg-black/80 hover:text-white/90 ">
+      <Button disabled={isBtnDisabled}  type="submit" className="mt-2 bg-black text-white w-full hover:bg-black/80 hover:text-white/90 rounded-xl ">
         {buttonText || "Submit"}
       </Button>
     </form>
