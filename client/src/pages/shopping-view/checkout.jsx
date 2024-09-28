@@ -3,10 +3,14 @@ import img from '../../assets/account.jpg'
 import Address from '../../components/shopping-view/address'
 import UserCartItemContent from '../../components/shopping-view/cart-items-content'
 import { Button } from '../../components/ui/button'
+import { useState } from 'react'
 const ShoppingCheckOut = () => {
 
   const { cartItems } = useSelector(state => state.shopCart)
+  const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null)
 
+  console.log(currentSelectedAddress);
+  
   const totalCartAmount =
         cartItems && cartItems.items && cartItems.items.length > 0
         ? cartItems.items.reduce(
@@ -29,7 +33,7 @@ const ShoppingCheckOut = () => {
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 p-5">
-        <Address />
+        <Address setCurrentSelectedAddress={setCurrentSelectedAddress} />
         <div className="flex flex-col gap-4">
           {
             cartItems && cartItems.items && cartItems.items.length > 0
