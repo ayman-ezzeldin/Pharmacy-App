@@ -45,13 +45,16 @@ const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
           </div>
         </div>
       </div>
-      <Button
+      {
+        cartItems && cartItems.length > 0 ?
+        <Button
         onClick={handleCheckout}
         className="w-full mt-6 bg-black text-white hover:bg-black hover:text-white text-lg rounded-xl"
-      >
+        >
         {" "}
         Checkout{" "}
-      </Button>
+      </Button> : null
+      }
     </SheetContent>
   );
 };

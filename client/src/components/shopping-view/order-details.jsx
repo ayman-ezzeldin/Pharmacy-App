@@ -1,57 +1,106 @@
-import { DialogContent } from "../ui/dialog";
+import { useSelector } from "react-redux";
+import { Badge } from "../ui/badge";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 
-const ShoppingOrderDetailsView = () => {
+function ShoppingOrderDetailsView({ orderDetails }) {
+  const { user } = useSelector((state) => state.auth);
+
   return (
-    <DialogContent className=" bg-white sm:max-w-[600px]">
-      <div className="grid gap-4">
+    <div className=" bg-white sm:max-w-[600px] ">
+      <div className="grid gap-6">
         <div className="grid gap-2">
           <div className="flex mt-6 items-center justify-between">
-            <p className="font-medium">Order ID</p>
-            <Label>2323</Label>
+            <p>Order ID</p>
+            <Label>{orderDetails?._id}</Label>
           </div>
           <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Order Date</p>
-            <Label>23/4/2203</Label>
+            <p>Order Date</p>
+            <Label>{orderDetails?.orderDate.split("T")[0]}</Label>
           </div>
           <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Order Price</p>
-            <Label>$ 299</Label>
+            <p>Order Price</p>
+            <Label>${orderDetails?.totalAmount}</Label>
           </div>
           <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Order Status</p>
-            <Label>In Process</Label>
+            <p>Payment method</p>
+            <Label>{orderDetails?.paymentMethod}</Label>
+          </div>
+          <div className="flex mt-2 items-center justify-between">
+            <p>Payment Status</p>
+            <Label>{orderDetails?.paymentStatus}</Label>
+          </div>
+          <div className="flex mt-2 items-center justify-between">
+            <p>Order Status</p>
+            <Label>
+              <Badge
+                className={`py-1 px-3 text-white ${
+                  orderDetails?.orderStatus === "confirmed"
+                    ? "bg-green-500 hover:bg-green-600 "
+                    : orderDetails?.orderStatus === "rejected"
+                    ? "bg-red-600 hover:bg-red-700 "
+                    : "bg-black hover:bg-black "
+                }`}
+              >
+                {orderDetails?.orderStatus}
+              </Badge>
+            </Label>
           </div>
         </div>
-        <Separator className=" w-full bg-gray-200 h-0.5" />
+        <Separator />
         <div className="grid gap-4">
           <div className="grid gap-2">
             <div className="font-bold">Order Details</div>
             <ul className="grid gap-3">
-              <li className="flex items-center justify-between">
-                <span>Product One</span>
-                <span>$ 139</span>
-              </li>
+              {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
+                ? orderDetails?.cartItems.map((item) => (
+                    <li
+                      key={item._id}
+                      className="flex items-center justify-between"
+                    >
+                      <span>Title: {item.title}</span>
+                      <span>Quantity: {item.quantity}</span>
+                      <span>Price: ${item.price}</span>
+                    </li>
+                  ))
+                : null}
             </ul>
           </div>
         </div>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <div className="font-medium">Shipping Info</div>
+            <div className="font-bold">Shipping Info</div>
             <div className="grid gap-0.5 text-muted-foreground">
-              <span>Ayman ezz</span>
-              <span>Address</span>
-              <span>City</span>
-              <span>Pincode</span>
-              <span>Phone</span>
-              <span>Notes</span>
+              <div className="flex mt-2 items-center justify-between">
+                <p>Name</p>
+                <Label>{user.username}</Label>
+              </div>
+              <div className="flex items-center justify-between mt-2">
+                <p>Address</p>
+                <Label> {orderDetails?.addressInfo?.address}</Label>
+              </div>
+              <div className="flex items-center justify-between mt-2">
+                <p>City</p>
+                <Label> {orderDetails?.addressInfo?.city}</Label>
+              </div>
+              <div className="flex items-center justify-between mt-2">
+                <p>Pincode</p>
+                <Label> {orderDetails?.addressInfo?.pincode}</Label>
+              </div>
+              <div className="flex items-center justify-between mt-2">
+                <p>Phone</p>
+                <Label> {orderDetails?.addressInfo?.phone}</Label>
+              </div>
+              <div className="flex items-center justify-between mt-2">
+                <p>Notes</p>
+                <Label> {orderDetails?.addressInfo?.notes}</Label>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </DialogContent>
-  )
+    </div>
+  );
 }
 
-export default ShoppingOrderDetailsView
+export default ShoppingOrderDetailsView;

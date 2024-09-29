@@ -3,7 +3,7 @@ const Product = require("../../models/Product");
 
 const addToCart = async (req, res) => {
   try {
-    const { userId, productId, quantity } = req.body;
+    const { userId, productId, quantity = 1 } = req.body; // Default quantity to 1
 
     if (!userId || !productId || quantity <= 0) {
       return res.status(400).json({
@@ -23,6 +23,7 @@ const addToCart = async (req, res) => {
 
     let cart = await Cart.findOne({ userId });
 
+    // If cart doesn't exist, create a new one
     if (!cart) {
       cart = new Cart({ userId, items: [] });
     }
@@ -32,8 +33,10 @@ const addToCart = async (req, res) => {
     );
 
     if (findCurrentProductIndex === -1) {
+      // If product is not in the cart, add it
       cart.items.push({ productId, quantity });
     } else {
+      // If product exists, increment quantity
       cart.items[findCurrentProductIndex].quantity += quantity;
     }
 
@@ -46,10 +49,11 @@ const addToCart = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Error",
+      message: error.message || "Error",
     });
   }
 };
+
 
 const fetchCartItems = async (req, res) => {
   try {
@@ -58,7 +62,7 @@ const fetchCartItems = async (req, res) => {
     if (!userId) {
       return res.status(400).json({
         success: false,
-        message: "User id is manadatory!",
+        message: error.message || "User id is manadatory!",
       });
     }
 
@@ -70,7 +74,7 @@ const fetchCartItems = async (req, res) => {
     if (!cart) {
       return res.status(404).json({
         success: false,
-        message: "Cart not found!",
+        message: error.message || "Cart not found!",
       });
     }
 
@@ -103,7 +107,7 @@ const fetchCartItems = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Error",
+      message: error.message || "Error",
     });
   }
 };
@@ -115,7 +119,7 @@ const updateCartItemQty = async (req, res) => {
     if (!userId || !productId || quantity <= 0) {
       return res.status(400).json({
         success: false,
-        message: "Invalid data provided!",
+        message: error.message || "Invalid data provided!",
       });
     }
 
@@ -123,7 +127,7 @@ const updateCartItemQty = async (req, res) => {
     if (!cart) {
       return res.status(404).json({
         success: false,
-        message: "Cart not found!",
+        message: error.message || "Cart not found!",
       });
     }
 
@@ -134,7 +138,7 @@ const updateCartItemQty = async (req, res) => {
     if (findCurrentProductIndex === -1) {
       return res.status(404).json({
         success: false,
-        message: "Cart item not present !",
+        message: error.message || "Cart item not present !",
       });
     }
 
@@ -177,7 +181,7 @@ const deleteCartItem = async (req, res) => {
     if (!userId || !productId) {
       return res.status(400).json({
         success: false,
-        message: "Invalid data provided!",
+        message: error.message || "Invalid data provided!",
       });
     }
 
@@ -189,7 +193,7 @@ const deleteCartItem = async (req, res) => {
     if (!cart) {
       return res.status(404).json({
         success: false,
-        message: "Cart not found!",
+        message: error.message || "Cart not found!",
       });
     }
 
@@ -224,7 +228,28 @@ const deleteCartItem = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Error",
+      message: error.message || "Error",
+    });
+  }
+};
+
+const clearCart = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Assuming you have a Cart model with a 'userId' field
+    await Cart.deleteMany({ userId: userId });
+
+    // Respond with success
+    res.status(200).json({
+      success: true,
+      message: error.message || "Cart cleared successfully",
+    });
+  } catch (error) {
+    console.error("Error clearing cart:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to clear the cart",
     });
   }
 };
@@ -234,4 +259,5 @@ module.exports = {
   updateCartItemQty,
   deleteCartItem,
   fetchCartItems,
+  clearCart,
 };

@@ -16,7 +16,7 @@ const initialAddressFormData = {
   notes: "",
 };
 
-const Address = ({setCurrentSelectedAddress}) => {
+const Address = ({ currentSelectedAddress, setCurrentSelectedAddress}) => {
   const [formData, setFormData] = useState(initialAddressFormData);
   const [currentEditedId, setCurrentEditedId] = useState(null);
   const { user } = useSelector(state => state.auth)  
@@ -114,6 +114,7 @@ const Address = ({setCurrentSelectedAddress}) => {
               addressInfo={address}
               handleEditAddress={handleEditAddress}
               handleDeleteAddress={handleDeleteAddress}
+              currentSelectedAddress={currentSelectedAddress}
               setCurrentSelectedAddress={setCurrentSelectedAddress}
             />
           )) : <p>No address found</p>
