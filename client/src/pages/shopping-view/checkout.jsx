@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { addNewOrder } from "../../store/shop/order-slice";
-import { clearCart, emptyCart} from "../../store/shop/cart-slice";
+import { clearCart } from "../../store/shop/cart-slice";
 
 function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
@@ -89,7 +89,7 @@ function ShoppingCheckout() {
       if (data?.payload?.success) {
         navigate('/shop/account')
         // Clear the cart
-        dispatch(emptyCart(user?.id));
+        dispatch(clearCart());
 
 
       } else {
