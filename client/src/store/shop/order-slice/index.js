@@ -2,71 +2,54 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  approvalURL: null,
   isLoading: false,
   orderId: null,
   orderList: [],
   orderDetails: null,
 };
 
+// Create a new order without payment processing
 export const createNewOrder = createAsyncThunk(
-  "/order/createNewOrder",
+  "order/createNewOrder",
   async (orderData) => {
     const response = await axios.post(
       "http://localhost:5000/api/shop/order/create",
       orderData
     );
-
     return response.data;
   }
 );
 
-export const capturePayment = createAsyncThunk(
-  "/order/capturePayment",
-  async ({ paymentId, payerId, orderId }) => {
+// Confirm the order and update the status
+export const confirmOrder = createAsyncThunk(
+  "order/confirmOrder",
+  async (orderId) => {
     const response = await axios.post(
-      "http://localhost:5000/api/shop/order/capture",
-      {
-        paymentId,
-        payerId,
-        orderId,
-      }
+      "http://localhost:5000/api/shop/order/confirm",
+      { orderId }
     );
-
     return response.data;
   }
 );
 
-export const addNewOrder = createAsyncThunk(
-  "/order/addNewOrder",
-  async (formData) => {
-    const response = await axios.post(
-      "http://localhost:5000/api/shop/order/add",
-      formData
-    );
-
-    return response.data;
-  }
-);
-
+// Get all orders by user ID
 export const getAllOrdersByUserId = createAsyncThunk(
-  "/order/getAllOrdersByUserId",
+  "order/getAllOrdersByUserId",
   async (userId) => {
     const response = await axios.get(
       `http://localhost:5000/api/shop/order/list/${userId}`
     );
-
     return response.data;
   }
 );
 
+// Get the details of a specific order
 export const getOrderDetails = createAsyncThunk(
-  "/order/getOrderDetails",
+  "order/getOrderDetails",
   async (id) => {
     const response = await axios.get(
       `http://localhost:5000/api/shop/order/details/${id}`
     );
-
     return response.data;
   }
 );
@@ -78,33 +61,17 @@ const shoppingOrderSlice = createSlice({
     resetOrderDetails: (state) => {
       state.orderDetails = null;
     },
+    clearOrderList: (state) => {
+      state.orderList = [];
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(addNewOrder.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(addNewOrder.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.orderList = action.payload.data;
-        // state.approvalURL = action.payload.approvalURL;
-        // state.orderId = action.payload.orderId;
-        // sessionStorage.setItem(
-        //   "currentOrderId",
-        //   JSON.stringify(action.payload.orderId)
-        // );
-      })
-      .addCase(addNewOrder.rejected, (state) => {
-        state.isLoading = false;
-        // state.approvalURL = null;
-        // state.orderId = null;
-      })
       .addCase(createNewOrder.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(createNewOrder.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.approvalURL = action.payload.approvalURL;
         state.orderId = action.payload.orderId;
         sessionStorage.setItem(
           "currentOrderId",
@@ -113,8 +80,19 @@ const shoppingOrderSlice = createSlice({
       })
       .addCase(createNewOrder.rejected, (state) => {
         state.isLoading = false;
-        state.approvalURL = null;
         state.orderId = null;
+      })
+      .addCase(confirmOrder.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(confirmOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // The order is now confirmed, and stock has been updated
+        const confirmedOrder = action.payload.data;
+        state.orderDetails = confirmedOrder;
+      })
+      .addCase(confirmOrder.rejected, (state) => {
+        state.isLoading = false;
       })
       .addCase(getAllOrdersByUserId.pending, (state) => {
         state.isLoading = true;
@@ -141,6 +119,6 @@ const shoppingOrderSlice = createSlice({
   },
 });
 
-export const { resetOrderDetails } = shoppingOrderSlice.actions;
+export const { clearOrderList, resetOrderDetails } = shoppingOrderSlice.actions;
 
 export default shoppingOrderSlice.reducer;

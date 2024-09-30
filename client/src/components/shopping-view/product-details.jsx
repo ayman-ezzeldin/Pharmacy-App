@@ -13,7 +13,29 @@ const ProductDetailsDialog = ({ open , setOpen, productDetails}) => {
   const dispatch = useDispatch()
   const { toast } = useToast()
   const { user } = useSelector(state => state.auth)
-  function handleAddToCart(getCurrentProductId) {
+  const { cartItems } = useSelector(state => state.shopCart)
+
+
+  function handleAddToCart(getCurrentProductId,getTotalStock) {
+
+    let getCartItems = cartItems.items || [] ;
+
+    if (getCartItems.length) {
+      const indexOfCurrentCartItem = getCartItems.findIndex(item => item.productId === getCurrentProductId);
+      if (indexOfCurrentCartItem > -1) {
+        const getQuantity = getCartItems[indexOfCurrentCartItem].quantity;
+        console.log(getQuantity);
+        
+        if (getQuantity + 1 > getTotalStock) {
+          toast({
+            title: `Only ${getQuantity} quantity can be added for this item`,
+            variant: "destructive",
+          });
+
+          return; 
+        }
+      }
+    }
     dispatch(
       addToCart({
         userId: user?.id,
@@ -24,7 +46,6 @@ const ProductDetailsDialog = ({ open , setOpen, productDetails}) => {
       if (data?.payload?.success) {
         dispatch(fetchCartItems(user?.id));
         toast({
-          variant: 'destructive',
           title: 'Cart item added successfully'
         })
       }
@@ -70,10 +91,12 @@ const ProductDetailsDialog = ({ open , setOpen, productDetails}) => {
             <span className=' text-muted-foreground' >(5.0)</span>
           </div>
           <div className=' my-5'>
-          <Button 
-            onClick={() => handleAddToCart(productDetails?._id)} 
-            variant="outline" 
-            className="w-full bg-black hover:bg-black/90 text-white hover:text-white/80 text-xl rounded-xl " >Add to cart</Button>
+          {
+            productDetails?.totalStock === 0 ? 
+              <Button className=" w-full opacity-60 cursor-not-allowed" > Out of Stock </Button>
+            :
+          <Button onClick={() => handleAddToCart(productDetails?._id, productDetails?.totalStock )} variant="outline" className="w-full bg-black hover:bg-black/90 text-white hover:text-white/80 text-md md:text-lg rounded-xl " >Add to cart</Button>
+          }
           </div>
           <Separator />
           <div className=' max-h-[300px] overflow-auto' >

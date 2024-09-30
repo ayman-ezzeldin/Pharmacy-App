@@ -41,6 +41,7 @@ const ShoppingListing = () => {
     (state) => state.shopProducts
   );
   const { user } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.shopCart);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -77,7 +78,28 @@ const ShoppingListing = () => {
     dispatch(fetchProductDetails(getCurrentProductId));
   }
 
-  function handleAddToCart(getCurrentProductId) {
+  function handleAddToCart(getCurrentProductId,getTotalStock) {
+
+    let getCartItems = cartItems.items || [] ;
+
+    if (getCartItems.length) {
+      const indexOfCurrentCartItem = getCartItems.findIndex(item => item.productId === getCurrentProductId);
+      if (indexOfCurrentCartItem > -1) {
+        const getQuantity = getCartItems[indexOfCurrentCartItem].quantity;
+        console.log(getQuantity);
+        
+        if (getQuantity + 1 > getTotalStock) {
+          toast({
+            title: `Only ${getQuantity} quantity can be added for this item`,
+            variant: "destructive",
+          });
+
+          return; 
+        }
+      }
+    }
+        
+
     dispatch(
       addToCart({
         userId: user?.id,
@@ -88,7 +110,6 @@ const ShoppingListing = () => {
       if (data?.payload?.success) {
         dispatch(fetchCartItems(user?.id));
         toast({
-          variant: 'destructive',
           title: 'Cart item added successfully'
         })
       }
