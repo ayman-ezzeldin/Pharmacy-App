@@ -26,8 +26,9 @@ const addProductReview = async (req, res) => {
     });
 
     if (checkExistinfReview) {
-      return res.status(400).json({
-        success: false,
+      return res.status(200).json({
+        success: true,
+        exists : true,
         message: "You already reviewed this product!",
       });
     }
