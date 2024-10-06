@@ -25,7 +25,7 @@ function SearchProducts() {
   const { cartItems } = useSelector((state) => state.shopCart);
   const { toast } = useToast();
 
-  
+
   useEffect(() => {
     if (keyword && keyword.trim() !== "" && keyword.trim().length > 2) {
       setTimeout(() => {
@@ -40,7 +40,6 @@ function SearchProducts() {
   }, [keyword]);
 
   function handleAddtoCart(getCurrentProductId, getTotalStock) {
-    console.log(cartItems);
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
@@ -77,7 +76,6 @@ function SearchProducts() {
   }
 
   function handleGetProductDetails(getCurrentProductId) {
-    console.log(getCurrentProductId);
     dispatch(fetchProductDetails(getCurrentProductId));
   }
 
@@ -85,7 +83,6 @@ function SearchProducts() {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
 
-  console.log(searchResults, "searchResults");
 
   return (
     <div className="container mx-auto md:px-6 px-4 py-8">
@@ -107,7 +104,7 @@ function SearchProducts() {
         {searchResults.map((item) => (
           <ShoppingProductTile
             key={item._id}
-            handleAddtoCart={handleAddtoCart}
+            handleAddToCart={handleAddtoCart}
             product={item}
             handleGetProductDetails={handleGetProductDetails}
           />
