@@ -1,6 +1,6 @@
-import bannerOne from "../../assets/banner-1.webp";
-import bannerTwo from "../../assets/banner-2.webp";
-import bannerThree from "../../assets/banner-3.webp";
+// import bannerOne from "../../assets/banner-1.webp";
+// import bannerTwo from "../../assets/banner-2.webp";
+// import bannerThree from "../../assets/banner-3.webp";
 import { Button } from "../../components/ui/button";
 import {
   Airplay,
@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { addToCart, fetchCartItems } from "../../store/shop/cart-slice";
 import { useToast } from "../../hooks/use-toast";
 import ProductDetailsDialog from "../../components/shopping-view/product-details";
+import { getFeatureImages } from "../../store/common-slice";
 
 
 const categoriesWithIcon = [
@@ -50,7 +51,7 @@ const ShoppingHome = () => {
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
-  // const { featureImageList } = useSelector((state) => state.commonFeature);
+  const { featureImageList } = useSelector((state) => state.commonFeature);
 
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
@@ -61,7 +62,7 @@ const ShoppingHome = () => {
   const { toast } = useToast();
 
 
-  const slides = [bannerOne, bannerTwo, bannerThree];
+  // const slides = [bannerOne, bannerTwo, bannerThree];
 
 
   function handleNavigateToListingPage(getCurrentItem, section) {
@@ -102,11 +103,11 @@ const ShoppingHome = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-    }, 5000);
+      setCurrentSlide((prev) => (prev === 0 ? featureImageList.length - 1 : prev - 1));
+    }, 3000);
 
     return () => clearInterval(timer);
-  }, [currentSlide, slides.length]);
+  }, [ currentSlide, featureImageList]);
 
   useEffect(() => {
     dispatch(
@@ -117,12 +118,17 @@ const ShoppingHome = () => {
     );
   }, [dispatch]);
 
+  useEffect(()=> {
+    dispatch(getFeatureImages())    
+  },[dispatch])
+
   return (
     <div className=" flex flex-col min-h-screen">
       <div className="relative w-full h-[600px] overflow-hidden">
-        {slides.map((slide, index) => (
+        {featureImageList && featureImageList.length > 0 &&
+          featureImageList.map((slide, index) => (
           <img
-            src={slide}
+            src={slide?.image}
             alt={slide}
             key={index}
             className={`${
@@ -135,7 +141,7 @@ const ShoppingHome = () => {
           size="icon"
           onClick={() =>
             setCurrentSlide((prev) =>
-              prev === 0 ? slides.length - 1 : prev - 1
+              prev === 0 ? featureImageList.length - 1 : prev - 1
             )
           }
           className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80"
@@ -148,7 +154,7 @@ const ShoppingHome = () => {
           size="icon"
           onClick={() =>
             setCurrentSlide((prev) =>
-              prev === slides.length - 1 ? 0 : prev + 1
+              prev === featureImageList.length - 1 ? 0 : prev + 1
             )
           }
           className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80"

@@ -70,8 +70,9 @@ export const HeaderRightContent = () => {
       <Sheet open={openCartSheet} onOpenChange={()=>setOpenCartSheet(false)} >
         <Button 
           onClick={() => setOpenCartSheet(true)} 
-          varient="outline" size='icon' >
+          varient="outline" size='icon' className=" relative" >
           <ShoppingCart className="h-6 w-6" />
+            <span className="absolute -top-1 right-0 text-xs font-bold bg-red-500 text-white text-center rounded-full px-1" > {cartItems?.items?.length || 0} </span>
           <span className="sr-only">User Cart</span>
         </Button>
         <UserCartWrapper setOpenCartSheet={setOpenCartSheet} cartItems={cartItems && cartItems.items && cartItems.items.length > 0 ? cartItems.items : [] } />

@@ -79,12 +79,17 @@ function ShoppingCheckout() {
         // After successful order creation, confirm the order
         dispatch(confirmOrder(data.payload.orderId)).then((confirmData) => {
           if (confirmData?.payload?.success) {
+            dispatch(clearOrderList());
             toast({
               title: "Order placed successfully!",
               variant: "success",
             });
-            navigate("/shop/account");
-            dispatch(clearOrderList());
+            setTimeout(() => {
+              navigate("/shop/account");
+              window.location.reload();
+              window.scrollTo(0, 0);
+            }, 100);
+            
           } else {
             toast({
               title: "Failed to confirm order.",
