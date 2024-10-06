@@ -8,13 +8,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useToast } from '../../hooks/use-toast'
 import { addToCart, fetchCartItems } from '../../store/shop/cart-slice'
 import { setProductDetails } from '../../store/shop/products-slice'
+import { Label } from '../ui/label'
+import StarRatingComponent from './star-rating'
+import { useState } from 'react'
+import { addReview } from '../../store/shop/review-slice'
 const ProductDetailsDialog = ({ open , setOpen, productDetails}) => {
 
+  const [reviewMsg , setReviewMsg] = useState('')
+  const [rating , setRating] = useState(0)
   const dispatch = useDispatch()
   const { toast } = useToast()
   const { user } = useSelector(state => state.auth)
   const { cartItems } = useSelector(state => state.shopCart)
 
+  function handleRatingChange(getRating) {
+    setRating(getRating)
+  }
 
   function handleAddToCart(getCurrentProductId,getTotalStock) {
 
@@ -56,6 +65,19 @@ const ProductDetailsDialog = ({ open , setOpen, productDetails}) => {
   function handleDialogClose() {
     setOpen(false)
     dispatch(setProductDetails())
+  }
+
+  function handleAddReview() {
+    dispatch(addReview({
+      productId: productDetails._id,
+      userId: user?.id,
+      userName: user?.username,
+      reviewMessage: reviewMsg,
+      reviewValue: rating,
+    })).then(data => {
+      console.log(data);
+      
+    })
   }
   return (
     <Dialog open={open} onOpenChange={handleDialogClose} >
@@ -122,9 +144,18 @@ const ProductDetailsDialog = ({ open , setOpen, productDetails}) => {
               </div>
               <hr />
             </div>
-            <div className="flex mt-6 gap-2">
-              <Input className=' w-full rounded-xl' placeholder="Add a review" />
-              <Button variant="outline" className=" bg-black hover:bg-black/90 text-white hover:text-white/80 text-lg rounded-xl " >Submit</Button>
+            <div className="flex flex-col mt-10 gap-2">
+              <Label>Write a review</Label>
+              <div className="flex">
+                <StarRatingComponent rating={rating} handleRatingChange={handleRatingChange} />
+              </div>
+              <Input className=' w-full rounded-xl' placeholder="Add a review"
+                name='reviewMsg' value={reviewMsg} onChange={(e) => setReviewMsg(e.target.value)}
+              />
+              <Button variant="outline" 
+                onClick={handleAddReview}
+                disabled={reviewMsg.trim() === ""}
+                className=" bg-black hover:bg-black/90 text-white hover:text-white/80 text-lg rounded-xl " >Submit</Button>
             </div>
           </div>
         </div>
