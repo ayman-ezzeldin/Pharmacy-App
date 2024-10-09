@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom"
-import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from 'lucide-react'
+import { Activity, HousePlug, LogOut, Menu, ShoppingCart, UserCog } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
 import {Button} from '../ui/button'
 import { useDispatch, useSelector } from 'react-redux'
@@ -47,7 +47,7 @@ const MenuItems = ({ setOpen }) => {
               handleNavigate(menuItem)
               setOpen ? setOpen(false) : null
             } }
-            key={menuItem.id} className=" text-sm font-medium cursor-pointer" > {menuItem.label}
+            key={menuItem.id} className=" text-md md:text-sm font-medium cursor-pointer" > {menuItem.label}
           </Label>
         )
       }
@@ -112,8 +112,8 @@ const ShoppingHeader = () => {
     <header className=" sticky top-0 z-40 border-b bg-background" >
       <div className=" flex h-16 items-center justify-between px-4 md:px-6" >
         <Link to='/shop/home' className=" flex gap-2 items-center" >
-          <HousePlug className="h-6 w-6" />
-          <span className="font-bold" >E-commerce</span>
+          <Activity className="h-8 w-8" />
+          <span className="font-bold text-2xl tracking-wider " >Pharmacy</span>
         </Link>
         <Sheet open={open} onOpenChange={setOpen} >
           <SheetTrigger asChild >

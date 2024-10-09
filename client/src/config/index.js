@@ -64,11 +64,11 @@ export const addProductFormElements = [
     name: "category",
     componentType: "select",
     options: [
-      { id: "men", label: "Men" },
-      { id: "women", label: "Women" },
-      { id: "kids", label: "Kids" },
-      { id: "accessories", label: "Accessories" },
-      { id: "footwear", label: "Footwear" },
+      { id: "painRelief", label: "Pain Relief"},
+      { id: "coldAndAllergy", label: "Cold and Allergy"},
+      { id: "vitaminsAndSupplements", label: "Vitamins and Supplements"},
+      { id: "personalCare", label: "Personal Care" },
+      { id: "firstAid", label: "First Aid"},
     ],
   },
   {
@@ -76,12 +76,11 @@ export const addProductFormElements = [
     name: "brand",
     componentType: "select",
     options: [
-      { id: "nike", label: "Nike" },
-      { id: "adidas", label: "Adidas" },
-      { id: "puma", label: "Puma" },
-      { id: "levi", label: "Levi's" },
-      { id: "zara", label: "Zara" },
-      { id: "h&m", label: "H&M" },
+      { id: "GlobalNapiPharma", label: "Global Napi Pharma" },
+      { id: "EVAPharma", label: "EVA Pharma" },
+      { id: "SEDICO", label: "SEDICO" },
+      { id: "PharmaOverseas", label: "PharmaOverseas" },
+      { id: "Marcyrl", label: "Marcyrl" },
     ],
   },
   {
@@ -119,28 +118,28 @@ export const shoppingViewHeaderMenuItems = [
     path: "/shop/listing",
   },
   {
-    id: "men",
-    label: "Men",
+    id: "painRelief",
+    label: "Pain Relief",
     path: "/shop/listing",
   },
   {
-    id: "women",
-    label: "Women",
+    id: "coldAndAllergy",
+    label: "Cold and Allergy",
     path: "/shop/listing",
   },
   {
-    id: "kids",
-    label: "Kids",
+    id: "vitaminsAndSupplements",
+    label: "Vitamins and Supplements",
     path: "/shop/listing",
   },
   {
-    id: "footwear",
-    label: "Footwear",
+    id: "personalCare",
+    label: "Personal Care",
     path: "/shop/listing",
   },
   {
-    id: "accessories",
-    label: "Accessories",
+    id: "firstAid",
+    label: "First Aid",
     path: "/shop/listing",
   },
   {
@@ -151,37 +150,35 @@ export const shoppingViewHeaderMenuItems = [
 ];
 
 export const categoryOptionsMap = {
-  men: "Men",
-  women: "Women",
-  kids: "Kids",
-  accessories: "Accessories",
-  footwear: "Footwear",
+  painRelief: "Pain Relief",
+  coldAndAllergy: "Cold and Allergy",
+  vitaminsAndSupplements: "Vitamins and Supplements",
+  personalCare: "Personal Care",
+  firstAid: "First Aid",
 };
 
 export const brandOptionsMap = {
-  nike: "Nike",
-  adidas: "Adidas",
-  puma: "Puma",
-  levi: "Levi",
-  zara: "Zara",
-  "h&m": "H&M",
+  GlobalNapiPharma: "Global Napi Pharma",
+  EVAPharma: "EVA Pharma",
+  SEDICO: "SEDICO",
+  PharmaOverseas: "PharmaOverseas",
+  Marcyrl: "Marcyrl",
 };
 
 export const filterOptions = {
   category: [
-    { id: "men", label: "Men" },
-    { id: "women", label: "Women" },
-    { id: "kids", label: "Kids" },
-    { id: "accessories", label: "Accessories" },
-    { id: "footwear", label: "Footwear" },
+    { id: "painRelief", label: "Pain Relief"},
+    { id: "coldAndAllergy", label: "Cold and Allergy"},
+    { id: "vitaminsAndSupplements", label: "Vitamins and Supplements"},
+    { id: "personalCare", label: "Personal Care" },
+    { id: "firstAid", label: "First Aid"},
   ],
   brand: [
-    { id: "nike", label: "Nike" },
-    { id: "adidas", label: "Adidas" },
-    { id: "puma", label: "Puma" },
-    { id: "levi", label: "Levi's" },
-    { id: "zara", label: "Zara" },
-    { id: "h&m", label: "H&M" },
+    { id: "GlobalNapiPharma", label: "Global Napi Pharma" },
+    { id: "EVAPharma", label: "EVA Pharma" },
+    { id: "SEDICO", label: "SEDICO" },
+    { id: "PharmaOverseas", label: "PharmaOverseas" },
+    { id: "Marcyrl", label: "Marcyrl" },
   ],
 };
 

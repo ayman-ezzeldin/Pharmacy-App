@@ -78,7 +78,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action) => {},
+    // setUser: (state, action) => {},
   },
   extraReducers: (builder) => {
     builder
@@ -90,11 +90,10 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
       })
-      .addCase(registerUser.rejected, (state, action) => {
+      .addCase(registerUser.rejected, (state) => {
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
-        console.error("Registration failed: ", action.error); 
       })
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
@@ -103,7 +102,6 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.success ? action.payload.user : null;
         state.isAuthenticated = action.payload.success;
-        console.log("Login successful: ", action.payload.success);
       })
       .addCase(loginUser.rejected, (state) => {
         state.isLoading = false;
@@ -131,5 +129,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser } = authSlice.actions;
+// export const { setUser } = authSlice.actions;
 export default authSlice.reducer;

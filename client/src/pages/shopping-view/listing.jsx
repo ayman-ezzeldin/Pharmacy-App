@@ -143,7 +143,7 @@ const ShoppingListing = () => {
 
 
   return (
-    <div className=" grid grid-cols-1 md:grid-cols-[150px_1fr] gap-6 p-4 md:p-6 ">
+    <div className=" grid grid-cols-1 md:grid-cols-[160px_1fr] gap-6 p-4 md:p-6 ">
       <ProductFilter handleFilter={handleFilter} filters={filters} />
       <div className=" bg-background w-full rounded-lg shadow-sm">
         <div className=" p-4 border-b flex items-center justify-between">
@@ -164,7 +164,7 @@ const ShoppingListing = () => {
                   <span>Sort</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[200px]">
+              <DropdownMenuContent align="end" className="w-[200px] bg-white ">
                 <DropdownMenuRadioGroup value={sort} onValueChange={handleSort}>
                   {sortOptions.map((option) => (
                     <DropdownMenuRadioItem value={option.id} key={option.id}>
@@ -176,7 +176,7 @@ const ShoppingListing = () => {
             </DropdownMenu>
           </div>
         </div>
-        <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+        <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
           {productList && productList.length > 0
             ? productList.map((productItem) => (
                 <ShoppingProductTile
