@@ -44,6 +44,7 @@ function AdminProductTile({
           >
             Edit
           </Button>
+          <Button className="bg-black text-white hover:bg-black/ hover:text-white/90 rounded-full cursor-cell" > {product?.totalStock} </Button>
           <Button onClick={() => handleDelete(product?._id)}
             className="bg-red-700 rounded-xl text-white hover:bg-black/ hover:text-white/90"
             >Delete</Button>
