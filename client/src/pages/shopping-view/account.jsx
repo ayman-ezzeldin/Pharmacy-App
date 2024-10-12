@@ -1,4 +1,4 @@
-import accImg from '../../assets/account.jpg'
+import accImg from '../../assets/images.jpeg'
 import Address from '../../components/shopping-view/address'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs'
 import ShoppingOrders from '../../components/shopping-view/orders'
