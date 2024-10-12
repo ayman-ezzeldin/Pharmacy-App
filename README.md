@@ -115,7 +115,7 @@ This project is a full-stack web application for managing pharmacy-related activ
    ```
 
 3. **Access the app:**
-   Open [http://localhost:3000](http://localhost:5173) for the frontend, and [http://localhost:5000](http://localhost:5000) for the backend API.
+   Open [http://localhost:5173](http://localhost:5173) for the frontend, and [http://localhost:5000](http://localhost:5000) for the backend API.
 
 ---
 
