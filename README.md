@@ -55,7 +55,7 @@ This project is a full-stack web application for managing pharmacy-related activ
 
 ## Project Structure
 
-``
+
 ├── client                # Frontend files
 │   ├── public            # Public assets
 │   └── src               # React components (if applicable)
@@ -66,7 +66,7 @@ This project is a full-stack web application for managing pharmacy-related activ
 ├── package.json          # Project dependencies
 ├── README.md             # Project documentation
 └── .env                  # Environment variables
-``
+
 
 ---
 
