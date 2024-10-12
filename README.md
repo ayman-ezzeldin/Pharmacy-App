@@ -55,7 +55,7 @@ This project is a full-stack web application for managing pharmacy-related activ
 
 ## Project Structure
 
-
+```
 ├── client                # Frontend files
 │   ├── public            # Public assets
 │   └── src               # React components (if applicable)
@@ -66,36 +66,36 @@ This project is a full-stack web application for managing pharmacy-related activ
 ├── package.json          # Project dependencies
 ├── README.md             # Project documentation
 └── .env                  # Environment variables
-
+```
 
 ---
 
 ## Installation
 
 1. **Clone the repository:**
-   ``
+   ```
    git clone https://github.com/ayman-ezzeldin/Pharmacy-App.git
-   ``
+   ```
 
 2. **Install server dependencies:**
-   ``
+   ```
    cd server
    npm install
-   ``
+   ```
 
 3. **Install client dependencies:**
-   ``
+   ```
    cd client
    npm install
-   ``
+   ```
 
 4. **Set up environment variables:**
    Create a \`.env\` file in the root of the \`server\` folder with the following variables:
-   ``
+   ```
    PORT=5000
    MONGO_URI=your-mongodb-uri
    JWT_SECRET=your-secret-key
-   ``
+   ```
 
 ---
 
@@ -103,16 +103,16 @@ This project is a full-stack web application for managing pharmacy-related activ
 
 ### Run the development server:
 1. **Start backend:**
-   ``
+   ```
    cd server
    npm start
-   ``
+   ```
 
 2. **Start frontend:**
-   ``
+   ```
    cd client
    npm run dev
-   ``
+   ```
 
 3. **Access the app:**
    Open [http://localhost:3000](http://localhost:5173) for the frontend, and [http://localhost:5000](http://localhost:5000) for the backend API.
