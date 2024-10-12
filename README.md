@@ -39,9 +39,9 @@ This project is a full-stack web application for managing pharmacy-related activ
 ## Technologies Used
 
 - **Frontend**: 
-  - HTML5, CSS3 (Tailwind CSS or Bootstrap)
+  - HTML5, CSS3 (Tailwind CSS)
   - JavaScript (ES6+)
-  - React (Optional if using a JS framework)
+  - React 
   
 - **Backend**:
   - Node.js with Express.js
@@ -49,7 +49,7 @@ This project is a full-stack web application for managing pharmacy-related activ
   - JWT (for authentication)
   
 - **Deployment**: 
-  - Cloud services such as Heroku, Netlify, or AWS
+  - Cloud services such as Render
 
 ---
 
@@ -74,8 +74,7 @@ This project is a full-stack web application for managing pharmacy-related activ
 
 1. **Clone the repository:**
    \`\`\`bash
-   git clone https://github.com/your-username/pharmacy-website.git
-   cd pharmacy-website
+   git clone https://github.com/ayman-ezzeldin/Pharmacy-App.git
    \`\`\`
 
 2. **Install server dependencies:**
@@ -106,17 +105,17 @@ This project is a full-stack web application for managing pharmacy-related activ
 1. **Start backend:**
    \`\`\`bash
    cd server
-   npm run dev
+   npm start
    \`\`\`
 
 2. **Start frontend:**
    \`\`\`bash
    cd client
-   npm start
+   npm run dev
    \`\`\`
 
 3. **Access the app:**
-   Open [http://localhost:3000](http://localhost:3000) for the frontend, and [http://localhost:5000](http://localhost:5000) for the backend API.
+   Open [http://localhost:3000](http://localhost:5173) for the frontend, and [http://localhost:5000](http://localhost:5000) for the backend API.
 
 ---
 
