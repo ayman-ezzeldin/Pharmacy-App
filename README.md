@@ -39,9 +39,11 @@ This project is a full-stack web application for managing pharmacy-related activ
 ## Technologies Used
 
 - **Frontend**: 
-  - HTML5, CSS3 (Tailwind CSS)
+  - HTML5,
+  - CSS (Tailwind CSS)
   - JavaScript (ES6+)
-  - React 
+  - React
+  - Shadcn UI
   
 - **Backend**:
   - Node.js with Express.js
@@ -49,7 +51,7 @@ This project is a full-stack web application for managing pharmacy-related activ
   - JWT (for authentication)
   
 - **Deployment**: 
-  - Cloud services such as Render
+  - Cloud services such as [Render](https://e-commerce-mern-stack-1-zyrk.onrender.com)
 
 ---
 
