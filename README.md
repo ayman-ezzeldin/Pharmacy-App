@@ -49,6 +49,7 @@ This project is a full-stack web application for managing pharmacy-related activ
   - Node.js with Express.js
   - MongoDB (for database)
   - JWT (for authentication)
+  - Docker
   
 - **Deployment**: 
   - Cloud services such as [Render](https://e-commerce-mern-stack-1-zyrk.onrender.com)
